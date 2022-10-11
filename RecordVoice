@@ -25,3 +25,6 @@ sd.wait()
 print("finished")
 write('Recording.wav', f, recording)
 playsound("Recording.wav")
+
+
+#HappyHacktoberfest2022
