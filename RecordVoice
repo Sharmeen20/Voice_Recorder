@@ -1,8 +1,7 @@
-# VoiceRecorder with adjustable recording duration
-
 import sounddevice as sd
 from scipy.io.wavfile import write
 from playsound import playsound
+from datetime import datetime
 
 f = 44100  # Sampling frequency
 
@@ -13,12 +12,23 @@ except ValueError:
     print("Invalid input. Using default duration of 5 seconds.")
     seconds = 5
 
+# Generate timestamped filename
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+filename = f"Recording_{timestamp}.wav"
+
 # Start recording
-print("Starting: Speak now!")
+print("🎙️ Recording started. Speak now...")
 recording = sd.rec(int(seconds * f), samplerate=f, channels=2)
 sd.wait()
-print("Finished recording.")
+print(f"✅ Recording finished. Saved as {filename}")
 
-# Save and play the recording
-write('Recording.wav', f, recording)
-playsound("Recording.wav")
+# Save the recording
+write(filename, f, recording)
+
+# Ask user if they want to play the recording
+play = input("Do you want to play the recording? (y/n): ").strip().lower()
+if play == 'y':
+    print("🔊 Playing recording...")
+    playsound(filename)
+else:
+    print("⏭️ Playback skipped.")
